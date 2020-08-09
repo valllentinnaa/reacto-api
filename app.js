@@ -24,6 +24,9 @@ app.use('/api/user', userRouter);
 
 app.use('/', (req, res, next) => {
     console.log("Welcome to beginning of nothingness...");
+    res.send({
+        message: "Welcome to beginning of nothingness..."
+    });
 });
 
 module.exports = app;
