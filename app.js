@@ -17,6 +17,8 @@ app.use('/api/places', placesRouter);
 app.use('/api/articles', articlesRouter);
 app.use('/api/user', userRouter);
 
-app.listen(3000, () => {
-    console.log("ReactO Rest API is running on port 3000");
+app.use('/', (req, res, next) => {
+    console.log("Welcome to beginning of nothingness...");
 });
+
+module.exports = app;
