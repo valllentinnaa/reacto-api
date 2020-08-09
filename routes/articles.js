@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const Article = require('../models/article');
+const {authenticate} = require('../utils/auth');
 
 const router = Router();
 
@@ -12,7 +13,7 @@ router.get('/all', async (req, res) => {
     });
 });
 
-router.post('/new', async (req, res) => {
+router.post('/new', authenticate, async (req, res) => {
     const {
         name,
         description,
@@ -32,7 +33,7 @@ router.post('/new', async (req, res) => {
     })
 });
 
-router.delete('/delete/:articleId', async (req, res) => {
+router.delete('/delete/:articleId', authenticate, async (req, res) => {
     const id = req.params.articleId;
 
     await Article.findByIdAndDelete(id);
@@ -42,7 +43,7 @@ router.delete('/delete/:articleId', async (req, res) => {
     });
 });
 
-router.patch('/edit/:articleId', async (req, res) => {
+router.patch('/edit/:articleId', authenticate, async (req, res) => {
     const id = req.params.articleId;
 
     const {

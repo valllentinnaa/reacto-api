@@ -7,10 +7,11 @@ const cors = require('cors');
 
 const app = express();
 
-connectDB();
-
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+
+connectDB();
 
 app.use('/api/places', placesRouter);
 app.use('/api/articles', articlesRouter);
