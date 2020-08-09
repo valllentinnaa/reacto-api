@@ -1,16 +1,12 @@
-require('dotenv').config();
-const env = process.env.NODE_ENV || 'development';
-
 const mongoose = require('mongoose');
-const config = require('./config')[env];
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 
-const connectDB = () => {
-    mongoose.connect(config.databaseUrl, {
+const connectDB = (dbUrl) => {
+    mongoose.connect(dbUrl, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     }, (err) => {
