@@ -5,6 +5,14 @@ const {getArticle} = require('../controllers/article');
 
 const router = Router();
 
+router.get('/all', async (req, res) => {
+    const articles = await Article.find().lean();
+
+    res.status(200).json({
+        articles
+    });
+});
+
 router.get('/:articleId', async (req, res) => {
     const id = req.params.articleId;
     const article = await getArticle(id);
@@ -14,13 +22,6 @@ router.get('/:articleId', async (req, res) => {
     });
 });
 
-router.get('/all', async (req, res) => {
-    const articles = await Article.find().lean();
-
-    res.status(200).json({
-        articles
-    });
-});
 
 router.post('/new', authenticate, async (req, res) => {
     const {
