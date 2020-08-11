@@ -4,6 +4,16 @@ const {authenticate} = require('../utils/auth');
 
 const router = Router();
 
+router.get('/:placeId', async (req, res) => {
+    const id = req.params.placeId;
+    const place = await Place.findById(id).lean();
+
+    res.status(200).json({
+        place
+    });
+});
+
+
 router.get('/all', async (req, res) => {
     const places = await Place.find().lean();
 

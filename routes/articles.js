@@ -1,9 +1,18 @@
 const { Router } = require('express');
 const Article = require('../models/article');
 const {authenticate} = require('../utils/auth');
+const {getArticle} = require('../controllers/article');
 
 const router = Router();
 
+router.get('/:articleId', async (req, res) => {
+    const id = req.params.articleId;
+    const article = await getArticle(id);
+
+    res.status(200).json({
+        article
+    });
+});
 
 router.get('/all', async (req, res) => {
     const articles = await Article.find().lean();
