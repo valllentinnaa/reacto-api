@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const Model = mongoose.model;
+const { String, Number, Boolean, ObjectId } = Schema.Types;
 
 const ArticleSchema = new mongoose.Schema({
     name: {
@@ -18,18 +21,14 @@ const ArticleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    places: [{
-        type: 'ObjectId',
-        ref: 'Place'
-    }],
-    creatorId: {
-        type: 'ObjectId',
+    author: {
+        type: ObjectId,
         ref: 'User'
     }
-});
+}, { timestamps: { createdAt: 'created_at' } });
 
 ArticleSchema.path('imageUrl').validate(function(url) {
     return url.startsWith('http://') || url.startsWith('https://')
 }, 'Image url is not valid');
 
-module.exports = mongoose.model('Article', ArticleSchema);
+module.exports = new Model('Article', ArticleSchema);

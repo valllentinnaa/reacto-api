@@ -1,44 +1,18 @@
-const { Router } = require('express');
-const User = require('../models/user');
-const {saveUser, verifyUser} =  require('../controllers/auth');
+const controllers = require('../controllers/');
+const router = require('express').Router();
 
-const router = Router();
+router.get('/', controllers.user.get);
 
-router.get('/all', async (req, res) => {
-    const users = await User.find().lean();
+router.post('/register', controllers.user.post.register);
 
-    res.status(200).json({
-        users
-    });
-});
+router.post('/login', controllers.user.post.login);
 
-router.post('/register', async (req, res) => {
-    const { password } = req.body;
+router.get('/verify', controllers.user.post.verifyLogin);
 
-    if (!password || password.length < 8 || !password.match(/^[A-Za-z0-9]+$/)) {
-        return res.send({
-            error: 'Username or password is not valid'
-        })
-    }
+router.post('/logout', controllers.user.post.logout);
 
-    const { error } = await saveUser(req, res);
+router.put('/:id', controllers.user.put);
 
-    if (error) {
-        return res.send({
-            error: 'Username or password is not valid'
-        })
-    }
-});
-
-router.post('/login', async (req, res) => {
-    const { error } = await verifyUser(req, res);
-
-    if (error) {
-        return res.send( {
-            error: 'Username or password is not correct'
-        })
-    }
-
-});
+router.delete('/:id', controllers.user.delete);
 
 module.exports = router;

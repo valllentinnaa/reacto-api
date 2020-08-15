@@ -1,29 +1,21 @@
-require('dotenv').config();
-const env = process.env.NODE_ENV || 'development';
+const jwt = require('./jwt');
+const config = require('../config/config');
+const models = require('../models');
 
-const config = require('../config/config')[env];
-const jwt = require('jsonwebtoken');
+module.exports = (redirectAuthenticated = true) => {
 
-const authenticate = (req, res, next) => {
-    const authHeader = req.get('Authorization');
-    if (!authHeader) {
-        return res.status(402).send({
-            message: "Missing Authorization Header"
-        });
+    return function (req, res, next) {
+        const token = req.headers.authorization || '';
+
+        jwt.verifyToken(token).then(data => {
+          models.User.findById(data.id)
+            .then((user) => {
+                req.user = user;
+                next();
+            }).catch(err => {
+              next(err)
+            });
+        })
     }
 
-    const token = authHeader.split(' ')[1];
-
-    try {
-        jwt.verify(token, config.privateKey);
-        next();
-    } catch(e) {
-        return res.status(402).send({
-            message: "Not allowed!"
-        });
-    }
-};
-
-module.exports = {
-    authenticate
 };
