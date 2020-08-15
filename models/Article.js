@@ -13,8 +13,6 @@ const ArticleSchema = new mongoose.Schema({
     description: {
         type: String,
         required: true,
-        maxlength: 2000,
-        match: [/^[A-Za-z0-9 ]+$/, 'Article description is not valid'],
         minlength: 20
     },
     imageUrl: {
