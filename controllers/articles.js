@@ -40,6 +40,7 @@ module.exports = {
 
     delete: (req, res, next) => {
         const id = req.params.id;
+        console.log(id);
         models.Article.deleteOne({ _id: id })
             .then((removedArticle) => res.send(removedArticle))
             .catch(next)
